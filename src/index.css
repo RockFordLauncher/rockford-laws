@@ -86,6 +86,7 @@ body {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--bg-surface);
   z-index: 40;
+  user-select: none;
 }
 .sidebar.collapsed {
   transform: translateX(-100%);
@@ -151,6 +152,7 @@ body {
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
   z-index: 30;
+  user-select: none;
 }
 
 .topbar-left, .topbar-right, .topbar-center {
