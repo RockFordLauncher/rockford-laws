@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import { ArrowUp, Share2, Trash2 } from 'lucide-react';
+import { ArrowUp, Share2, Trash2, Bot } from 'lucide-react';
 import data from './data.json';
 import Sidebar from './components/Sidebar';
 import TopNav from './components/TopNav';
 import ContentArea from './components/ContentArea';
+import AIAssistant from './components/AIAssistant';
 
 function App() {
   const [activeDoc, setActiveDoc] = useState('uk'); // 'uk' or 'pk'
   const [searchQuery, setSearchQuery] = useState('');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isBookmarksOpen, setIsBookmarksOpen] = useState(false);
+  const [isAIOpen, setIsAIOpen] = useState(false);
   const [bookmarks, setBookmarks] = useState([]);
   const [activeChapterId, setActiveChapterId] = useState('');
   const [fontSize, setFontSize] = useState('medium'); // small, medium, large, xlarge
@@ -175,6 +177,9 @@ function App() {
 
         {/* FAB */}
         <div className="fab-container">
+          <button className="fab ai-fab" onClick={() => setIsAIOpen(true)} title="ИИ Юрист" style={{ background: 'var(--accent-gradient)', color: 'white', border: 'none' }}>
+            <Bot size={24} />
+          </button>
           {progress > 10 && (
             <button className="fab" onClick={scrollToTop} title="Наверх">
               <ArrowUp size={24} />
@@ -186,6 +191,8 @@ function App() {
             </button>
           )}
         </div>
+        
+        <AIAssistant isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
       </div>
 
       {/* Toast container */}
