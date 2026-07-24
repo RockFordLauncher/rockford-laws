@@ -65,7 +65,7 @@ const AIAssistant = ({ isOpen, onClose }) => {
       setMessages(prev => [...prev, { role: 'ai', text }]);
     } catch (error) {
       console.error('AI Error:', error);
-      setMessages(prev => [...prev, { role: 'ai', text: 'Извините, произошла ошибка при обращении к ИИ. Попробуйте позже или проверьте консоль.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: `Извините, произошла ошибка: ${error.message || 'Неизвестная ошибка'}` }]);
     } finally {
       setIsLoading(false);
     }
