@@ -9,7 +9,7 @@ const API_KEY = ['AQ.Ab8RN6I', '5iW6FI9omyQbr16', 'uw0NDRpR--VWteVw', 'Hf04VCfx1
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const model = genAI.getGenerativeModel({
-  model: 'gemini-2.5-flash',
+  model: 'gemini-3.6-flash',
   systemInstruction: `Ты опытный юрист и судья округа Rockford.
 Тебе предоставлен полный свод законов (Уголовный кодекс, Процессуальный кодекс, Административный кодекс, Конституция) в формате JSON.
 Твоя задача: внимательно проанализировать ситуацию пользователя и сказать, какие статьи из этих кодексов были нарушены, что грозит нарушителю и что делать в этой ситуации.
