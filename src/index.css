@@ -86,6 +86,8 @@ body {
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--bg-surface);
   z-index: 40;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 .sidebar.collapsed {
@@ -122,6 +124,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 .nav-item:hover {
   background: var(--bg-surface-hover);
@@ -152,6 +157,8 @@ body {
   justify-content: space-between;
   border-bottom: 1px solid var(--border-color);
   z-index: 30;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 
@@ -183,6 +190,9 @@ body {
   font-size: 0.9rem;
   transition: all 0.2s ease;
   outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
 }
 .btn:hover {
   background: var(--bg-surface-hover);
@@ -280,6 +290,8 @@ body {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
   user-select: none;
 }
 .chapter-title:hover {
