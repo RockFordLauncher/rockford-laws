@@ -9,7 +9,7 @@ const API_KEY = ['AQ.Ab8RN6I', '5iW6FI9omyQbr16', 'uw0NDRpR--VWteVw', 'Hf04VCfx1
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const model = genAI.getGenerativeModel({
-  model: 'gemini-3.6-flash',
+  model: 'gemini-3.5-flash-lite',
   systemInstruction: `Ты опытный юрист округа Rockford.
 Тебе предоставлен полный свод законов в формате JSON.
 Твоя задача: проанализировать ситуацию и ответить МАКСИМАЛЬНО КОРОТКО, без лишней воды, списков и заголовков. 
@@ -57,16 +57,24 @@ const AIAssistant = ({ isOpen, onClose }) => {
         chatSessionRef.current = model.startChat({ history: [] });
       }
       
-      const result = await chatSessionRef.current.sendMessage(userMessage);
-      const response = await result.response;
-      const text = response.text();
+      const result = await chatSessionRef.current.sendMessageStream(userMessage);
       
-      setMessages(prev => [...prev, { role: 'ai', text }]);
+      let textSoFar = '';
+      setIsLoading(false);
+      setMessages(prev => [...prev, { role: 'ai', text: textSoFar }]);
+      
+      for await (const chunk of result.stream) {
+        textSoFar += chunk.text();
+        setMessages(prev => {
+          const newMsgs = [...prev];
+          newMsgs[newMsgs.length - 1] = { role: 'ai', text: textSoFar };
+          return newMsgs;
+        });
+      }
     } catch (error) {
       console.error('AI Error:', error);
-      setMessages(prev => [...prev, { role: 'ai', text: `Извините, произошла ошибка: ${error.message || 'Неизвестная ошибка'}` }]);
-    } finally {
       setIsLoading(false);
+      setMessages(prev => [...prev, { role: 'ai', text: `Извините, произошла ошибка: ${error.message || 'Неизвестная ошибка'}` }]);
     }
   };
 
