@@ -49,12 +49,12 @@ const AIAssistant = ({ isOpen, onClose, onNavigate }) => {
 
   const renderMessage = (text) => {
     if (!text) return null;
-    const parts = text.split(/(\[[a-z]+-[a-z0-9.-]+\])/gi);
+    const parts = text.split(/(\[[a-z]+-[a-z0-9.-]+\]|\*\*.*?\*\*)/gi);
     return parts.map((part, i) => {
-      const match = part.match(/^\[([a-z]+)-([a-z0-9.-]+)\]$/i);
-      if (match) {
-        const doc = match[1].toLowerCase();
-        const num = match[2];
+      const linkMatch = part.match(/^\[([a-z]+)-([a-z0-9.-]+)\]$/i);
+      if (linkMatch) {
+        const doc = linkMatch[1].toLowerCase();
+        const num = linkMatch[2];
         const docNames = { uk: 'УК', pk: 'ПК', ak: 'АК', const: 'Конст.' };
         return (
           <span 
@@ -67,6 +67,12 @@ const AIAssistant = ({ isOpen, onClose, onNavigate }) => {
           </span>
         );
       }
+      
+      const boldMatch = part.match(/^\*\*(.*?)\*\*$/);
+      if (boldMatch) {
+        return <strong key={i}>{boldMatch[1]}</strong>;
+      }
+
       return <span key={i}>{part}</span>;
     });
   };
