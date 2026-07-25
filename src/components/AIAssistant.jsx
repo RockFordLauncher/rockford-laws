@@ -14,13 +14,13 @@ const model = genAI.getGenerativeModel({
 Тебе предоставлен полный свод законов в формате JSON.
 Твоя задача: проанализировать ситуацию и ответить МАКСИМАЛЬНО КОРОТКО, без воды.
 Используй такой формат:
-📌 Статьи: [номера статей и суть в 2-3 слова]
+📌 Статьи: ОБЯЗАТЕЛЬНО пиши ссылки на статьи в формате [кодекс-номер] и давай краткую расшифровку (например, [uk-1.1] Убийство). Кодексы: uk, pk, ak, const.
 ⚖️ Наказание: [что грозит, кратко]
 🚨 Действия: [что делать, кратко]
 Законы: ${JSON.stringify(data)}`
 });
 
-const AIAssistant = ({ isOpen, onClose }) => {
+const AIAssistant = ({ isOpen, onClose, onNavigate }) => {
   const [messages, setMessages] = useState([
     { role: 'ai', text: 'Привет! Опишите ситуацию, и я подскажу, какие статьи были нарушены и что делать.' }
   ]);
@@ -46,6 +46,30 @@ const AIAssistant = ({ isOpen, onClose }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
+
+  const renderMessage = (text) => {
+    if (!text) return null;
+    const parts = text.split(/(\[[a-z]+-\d+(?:\.\d+)?\])/gi);
+    return parts.map((part, i) => {
+      const match = part.match(/^\[([a-z]+)-(\d+(?:\.\d+)?)\]$/i);
+      if (match) {
+        const doc = match[1].toLowerCase();
+        const num = match[2];
+        const docNames = { uk: 'УК', pk: 'ПК', ak: 'АК', const: 'Конст.' };
+        return (
+          <span 
+            key={i} 
+            className="article-link" 
+            onClick={() => onNavigate && onNavigate(doc, `${doc}-${num}`)}
+            title="Нажмите, чтобы перейти к статье"
+          >
+            Статья {num} {docNames[doc] || doc.toUpperCase()}
+          </span>
+        );
+      }
+      return <span key={i}>{part}</span>;
+    });
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
@@ -106,7 +130,7 @@ const AIAssistant = ({ isOpen, onClose }) => {
         {messages.map((msg, idx) => (
           <div key={idx} className={classNames('ai-message-wrapper', msg.role)}>
             <div className="ai-message">
-              {msg.text}
+              {msg.role === 'ai' ? renderMessage(msg.text) : msg.text}
             </div>
           </div>
         ))}

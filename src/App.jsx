@@ -100,6 +100,19 @@ function App() {
     }
   };
 
+  const handleNavigateToArticle = (docId, articleId) => {
+    setActiveDoc(docId);
+    // Give time for DOM to render the new document before scrolling
+    setTimeout(() => {
+      const el = document.getElementById(articleId);
+      if (el && scrollRef.current) {
+        const container = scrollRef.current;
+        const topPos = el.offsetTop - 100;
+        container.scrollTo({ top: topPos, behavior: 'smooth' });
+      }
+    }, 100);
+  };
+
   // Generate data for bookmarks view
   let currentData;
   if (activeDoc === 'bookmarks') {
@@ -192,7 +205,11 @@ function App() {
           )}
         </div>
         
-        <AIAssistant isOpen={isAIOpen} onClose={() => setIsAIOpen(false)} />
+        <AIAssistant 
+          isOpen={isAIOpen} 
+          onClose={() => setIsAIOpen(false)} 
+          onNavigate={handleNavigateToArticle} 
+        />
       </div>
 
       {/* Toast container */}

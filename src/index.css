@@ -633,6 +633,17 @@ mark {
   outline: none;
 }
 
+.article-link {
+  color: var(--accent-blue);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.article-link:hover {
+  color: var(--accent-purple);
+}
+
 .ai-send-btn {
   background: var(--bg-surface-hover);
   border: 1px solid var(--border-color);
